@@ -57,10 +57,8 @@ io.on('connect', function (socket){
 		// // delete rooms[seq];
 		// connCnt--;
 		// if(connCnt == 0){
-		// 	//클라이언트 제거
 		// 	console.log('remove_room');
 		// 	io.emit('remove_room', data);
-		// 	//서버 rooms에서 제거 
 		// }
 	});
 	
