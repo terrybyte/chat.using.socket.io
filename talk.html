@@ -57,7 +57,8 @@
 			});
 
 			socket.on('connPeople', function (data){
-				$('#connCnt').append('<p></p>').append('online talk : ' + data);
+				//$('#connCnt').append('<p></p>').append('online talk : ' + data);
+				$('#connPeople').text('online talk : ' + data);
 			})
 
 		});
@@ -70,7 +71,9 @@
 			<input id="m" type="text" autocomplete="off"/>
 			<button>Send</button>
 		</form>
-		<div id="connCnt"></div>
+		<div id="connCnt">
+			<p id="connPeople"></p>
+		</div>
 		<fieldset>
 			<legend>chat list</legend>
 			<ul id="messages"></ul>
