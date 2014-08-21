@@ -13,7 +13,6 @@ app.use(express.static('public'));
 
 app.get('/', function (req,res){
 	console.log('Get - /');
-	// nsp = io.of('/');
 	fs.readFile('Lobby.html', function (err,data){
 		res.send(data.toString());
 	});	
