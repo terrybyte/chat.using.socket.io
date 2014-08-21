@@ -1,0 +1,14 @@
+{
+  "name": "real-time-canvas",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependecies": {},
+  "dependencies": {
+    "ejs": "^1.0.0",
+    "express": "^4.8.4",
+    "nodemon": "^1.2.1",
+    "socket.io": "^1.0.6"
+  }
+}

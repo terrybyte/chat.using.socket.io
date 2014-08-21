@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<title></title>
+	<meta charset="uft-8">
+	<link rel="stylesheet" type="text/css" href="/farbtastic.css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+	<script src="/farbtastic.js"></script>
+	<style>
+		button { 
+			width: 16%; 
+			border: 2; 
+			padding: 5px; 
+			float: right;;
+		}
+		#nick {padding: 5px; width: 15%; }
+		#m { padding: 5px; width: 60%; margin-right: .5%; }
+		#messages li { padding: 1px 2px; }
+		#messages li:nth-child(odd) { background: #eee; }
+		#messages { list-style-type: none; margin: 0; padding: 0; }
+		fieldset {
+			margin-top: 10px;
+		}
+	</style>
+	<script type="text/javascript">
+		//Point 생성자 함수
+		function Point(event, target){
+			this.x = event.pageX - $(target).position().left;
+			this.y = event.pageY - $(target).position().top;
+		}
+	</script>
+	<script>
+		$(document).ready(function (){
+
+			//소켓 이벤트 연결
+			var socket = io.connect();
+			var data = {
+				seq: '<%= seq %>',
+				room: '<%= room %>'
+			};
+			
+			socket.emit('join', data);
+			
+			$('form').submit(function(){
+				socket.emit('chat message', {
+					nick : $('#nick').val(),
+					m : $('#m').val()
+				});
+				$('#m').val('');
+				return false;
+			});
+
+			socket.on('chat message', function(msg){
+				$('#messages').append($('<li>').text(msg.nick +' >> ' + msg.m));
+			});
+
+		});
+	</script>
+</head>
+<body>
+	<div id="chatting">
+		<form>
+			<input id="nick" type="text" placeholder="대화명"/>
+			<input id="m" type="text" autocomplete="off"/>
+			<button>Send</button>
+		</form>
+		<fieldset>
+			<legend>chat list</legend>
+			<ul id="messages"></ul>
+		</fieldset>
+	</div>
+</body>
+</html>
