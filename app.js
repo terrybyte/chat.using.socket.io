@@ -106,19 +106,24 @@ io.on('connect', function (socket){
 
 			conns[room].pop(socket.id);
 			
-			console.log('conns[room].length : ' + conns[room].length);
+			var connPeople = conns[room].length;
 
-			if(conns[room].length === 0) {
+			console.log('conns[room].length : ' +connPeople);
+
+			if(connPeople === 0) {
 				delete conns[room];
 				delete rooms[room];
+				
 				console.log('JSON.stringify(rooms) > ' + JSON.stringify(rooms));
 				console.log('JSON.stringify(conns) > ' + JSON.stringify(conns));
-			}
 
-			io.emit('remove_room', room.toString());
+				io.emit('remove_room', room.toString()); //remove room from "Lobby.html"
+			}
+			
+			io.to(room).emit('connPeople', connPeople); //decrease the talk number at "talk.html"
+
 		} else {
-			var connPeople = conns[room].length;
-			io.to(room).emit('connPeople', connPeople);
+			return false;
 		}
 
 	});
