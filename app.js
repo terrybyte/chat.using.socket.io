@@ -115,7 +115,6 @@ io.on('connect', function (socket){
 				console.log('JSON.stringify(conns) > ' + JSON.stringify(conns));
 			}
 
-
 			io.emit('remove_room', room.toString());
 		} else {
 			var connPeople = conns[room].length;
