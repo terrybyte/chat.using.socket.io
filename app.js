@@ -18,7 +18,7 @@ app.get('/', function (req,res){
 	});	
 });
 
-app.get('/canvas', function (req,res){
+app.get('/secret', function (req,res){
 	//namespace
 	fs.readFile('talk.html', 'utf8', function (err,data){
 		res.send(ejs.render(data, {
@@ -36,9 +36,12 @@ app.get('/room', function (req,res){
 io.set('log level', 2);
 
 var rooms = {};
+var conns = {};
 var seq = 0;
 
 io.on('connect', function (socket){
+
+	console.log('connect : ' + socket.id);
 
 	// seq++;
 	// var connId = "id"+seq;
@@ -62,39 +65,44 @@ io.on('connect', function (socket){
 	});
 	
 	socket.on('join', function(data){
+		
 		//socket.connCnt = connCnt++;
 		console.log('Welcome to ' + data.room + ' Chat Room!');
 		// console.log('join connCnt : ' + connCnt);
-
-		socket.join(data.room);
-		room = data.room;
+		
+		socket.join(data.seq);
+		
+		room = data.seq;
 		rooms[data.seq] = data.room;
-		// console.log(socket.conn);
+
+		// if (conns[data.seq].length === 0) {
+		// }
+
+		console.log(JSON.stringify(conns));
+		conns[data.seq].push(socket.id);
+		
+		console.log(JSON.stringify(rooms));
+		console.log(JSON.stringify(conns));
 	});
 
 	socket.on('leave', function (){
 		console.log('leave connCnt : ' + connCnt);
 	});
 
-	// socket.on('draw', function (data){
-	// 	if(room != null) {
-	// 		io.to(room).emit('line', data);
-	// 	} else {
-	// 		console.log('Not Room');
-	// 	}
-	// });
-
 	socket.on('create_room', function (data){
 		console.log('create_room');
 		seq++;
-		room = data;
-		rooms[seq] = data;
+		//room = data;
+		rooms[seq] = data;	//room count
+		conns[seq] = [];	//connections entering a room
 		io.emit('create_room', {seq:seq, room:data.toString()});
-		console.log(rooms);
+		console.log(JSON.stringify(rooms));
 	});
 	
 	socket.on('chat message', function (data){
-		console.log('chat message');
+		
+		console.log('chat message : ' + data.nick + ' > ' + data.m);
+
 		io.to(room).emit('chat message', {
 			nick: data.nick,
 			m: data.m
