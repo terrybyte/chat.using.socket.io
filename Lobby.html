@@ -7,6 +7,7 @@
 	<script type="text/javascript">
 		$(document).ready(function (){
 
+			//function
 			function enterRoom(){
 				$('#container > button').on('click', function (){ 
 					var seq = $(this).attr('data-room');
@@ -23,12 +24,6 @@
 				});
 
 				enterRoom();
-				/*$('#container > button').on('click', function (){ 
-					var seq = $(this).attr('data-room');
-					var room = $(this).text();
-					//alert('hi!');
-					location = '/canvas?seq='+seq+'&room='+room;
-				});*/
 
 			});
 
@@ -42,12 +37,6 @@
 				$btn.css({'padding':'10px','cursor':'pointer'});
 				
 				enterRoom();
-
-				/*$('#container > button').on('click', function (){ 
-					var seq = $(this).attr('data-room');
-					var room = $(this).text();
-					location = '/canvas?seq='+seq+'&room='+room;
-				});*/
 
 			});
 
