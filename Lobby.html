@@ -8,55 +8,43 @@
 		$(document).ready(function (){
 
 			//function
-			function enterRoom(){
+			function enterRoom() {
 				$('#container > button').on('click', function (){ 
 					var seq = $(this).attr('data-room');
 					var room = $(this).text();
-					location = '/canvas?seq='+seq+'&room='+room;
+					location = '/secret?seq='+seq+'&room='+room;
 				});
 			}
 
 			//Ajax
-			$.getJSON('/room', function (data){
+			$.getJSON('/room', function (data) {
 				$.each(data, function (index, item){
 					var $btn = $('<button></button>').attr({'data-room':index}).text(item).appendTo('#container');
 					$btn.css({'padding':'10px','cursor':'pointer'});
 				});
-
 				enterRoom();
-
 			});
 
 			// Socket
 			var socket = io.connect();
 
-			socket.on('create_room', function (data){
-				
+			socket.on('create_room', function (data) {
 				var $btn = $('<button></button>').attr({'data-room':data.seq}).text(data.room).appendTo('#container');
-				
 				$btn.css({'padding':'10px','cursor':'pointer'});
-				
 				enterRoom();
-
 			});
 
-			socket.on('remove_room', function (data){
-				// $('<button></button>').attr({'data-room':data.seq}).text(data.room).remove();
-				$('button').remove(":contains('"+data.room+"')");
+			socket.on('remove_room', function (data) {
+				$('button[data-room="'+data+'"]').remove();
+				// $('button').remove(":contains('"+data.room+"')");
 			});
 
-			//link with event
-			// $(document).on('#container > button', 'click', function (){
-			// $('#container > button').on('click', function (){ alert('test'); });
-			// 	var room = $(this).attr('data-room');
-			// 	location = '/canvas/'+room;
-			// });
-
-			$('body > button').click(function (){
+			$('body > button').click(function () {
 				var room = $('#room').val();
 				socket.emit('create_room', room);
-				//location = '/canvas/'+room;
+				//location = '/secret/'+room;
 			});
+			
 		});
 	</script>
 </head>

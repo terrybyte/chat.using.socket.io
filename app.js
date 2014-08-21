@@ -43,40 +43,18 @@ io.on('connect', function (socket){
 
 	console.log('connect : ' + socket.id);
 
-	// seq++;
-	// var connId = "id"+seq;
-	// socket.connId = connId;
-	// rooms[connId] = socket;
-
 	var room = null;
-	// var connCnt = 0;
-	// socket.connCnt = 0;
 
 	console.log('connect');
-
-	socket.on('disconnect', function(data){
-		console.log('user disconnected');
-		// // delete rooms[seq];
-		// connCnt--;
-		// if(connCnt == 0){
-		// 	console.log('remove_room');
-		// 	io.emit('remove_room', data);
-		// }
-	});
 	
 	socket.on('join', function(data){
 		
-		//socket.connCnt = connCnt++;
 		console.log('Welcome to ' + data.room + ' Chat Room!');
-		// console.log('join connCnt : ' + connCnt);
 		
 		socket.join(data.seq);
 		
 		room = data.seq;
 		rooms[data.seq] = data.room;
-
-		// if (conns[data.seq].length === 0) {
-		// }
 
 		console.log(JSON.stringify(conns));
 		conns[data.seq].push(socket.id);
@@ -95,7 +73,10 @@ io.on('connect', function (socket){
 		//room = data;
 		rooms[seq] = data;	//room count
 		conns[seq] = [];	//connections entering a room
-		io.emit('create_room', {seq:seq, room:data.toString()});
+		io.emit('create_room', {
+			seq:seq, 
+			room:data.toString()
+		});
 		console.log(JSON.stringify(rooms));
 	});
 	
@@ -107,6 +88,35 @@ io.on('connect', function (socket){
 			nick: data.nick,
 			m: data.m
 		});
+	});
+
+	socket.on('disconnect', function (){
+
+		console.log('disconnect >> ' + socket.id);
+		
+		if(room !== null) {
+
+			console.log('room       >> ' + room);
+			
+			socket.leave(room);
+
+			conns[room].pop(socket.id);
+			
+			console.log('conns[room].length : ' + conns[room].length);
+
+			if(conns[room].length === 0) {
+				delete conns[room];
+				delete rooms[room];
+				console.log('JSON.stringify(rooms) > ' + JSON.stringify(rooms));
+				console.log('JSON.stringify(conns) > ' + JSON.stringify(conns));
+			}
+
+
+			io.emit('remove_room', room.toString());
+		} else {
+			return false;
+		}
+
 	});
 
 });
