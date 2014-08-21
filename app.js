@@ -118,7 +118,8 @@ io.on('connect', function (socket){
 
 			io.emit('remove_room', room.toString());
 		} else {
-			return false;
+			var connPeople = conns[room].length;
+			io.to(room).emit('connPeople', connPeople);
 		}
 
 	});
