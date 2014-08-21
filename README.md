@@ -4,7 +4,8 @@ Simple Online Chat application using the socket.io.
 
 Run Test
 ---------------
-* download project.zip
+
+download project.zip
 
 execute this project :
 
