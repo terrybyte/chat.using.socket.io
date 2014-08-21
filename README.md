@@ -1,3 +1,3 @@
 Simple Online Chat
 ===============
-Simple Online Chat application using the socket.io.
+1. Simple Online Chat application using the socket.io.

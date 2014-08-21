@@ -26,7 +26,6 @@
 		}
 	</style>
 	<script type="text/javascript">
-		//Point 생성자 함수
 		function Point(event, target){
 			this.x = event.pageX - $(target).position().left;
 			this.y = event.pageY - $(target).position().top;
@@ -35,8 +34,8 @@
 	<script>
 		$(document).ready(function (){
 
-			//소켓 이벤트 연결
 			var socket = io.connect();
+
 			var data = {
 				seq: '<%= seq %>',
 				room: '<%= room %>'
@@ -63,7 +62,7 @@
 <body>
 	<div id="chatting">
 		<form>
-			<input id="nick" type="text" placeholder="대화명"/>
+			<input id="nick" type="text" placeholder="nickname"/>
 			<input id="m" type="text" autocomplete="off"/>
 			<button>Send</button>
 		</form>
