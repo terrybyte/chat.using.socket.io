@@ -67,10 +67,6 @@ io.on('connect', function (socket){
 		io.to(room).emit('connPeople', connPeople);
 	});
 
-	// socket.on('leave', function (){
-	// 	console.log('leave connCnt : ' + connCnt);
-	// });
-
 	socket.on('create_room', function (data){
 		console.log('create_room');
 		seq++;
