@@ -61,11 +61,15 @@ io.on('connect', function (socket){
 		
 		console.log(JSON.stringify(rooms));
 		console.log(JSON.stringify(conns));
+
+		var connPeople = conns[room].length;
+
+		io.to(room).emit('connPeople', connPeople);
 	});
 
-	socket.on('leave', function (){
-		console.log('leave connCnt : ' + connCnt);
-	});
+	// socket.on('leave', function (){
+	// 	console.log('leave connCnt : ' + connCnt);
+	// });
 
 	socket.on('create_room', function (data){
 		console.log('create_room');

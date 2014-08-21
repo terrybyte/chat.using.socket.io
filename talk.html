@@ -43,7 +43,7 @@
 			
 			socket.emit('join', data);
 			
-			$('form').submit(function(){
+			$('form').submit(function (){
 				socket.emit('chat message', {
 					nick : $('#nick').val(),
 					m : $('#m').val()
@@ -52,9 +52,13 @@
 				return false;
 			});
 
-			socket.on('chat message', function(msg){
+			socket.on('chat message', function (msg){
 				$('#messages').append($('<li>').text(msg.nick +' >> ' + msg.m));
 			});
+
+			socket.on('connPeople', function (data){
+				$('#connCnt').append('<p></p>').append('online talk : ' + data);
+			})
 
 		});
 	</script>
